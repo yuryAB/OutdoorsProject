@@ -13,6 +13,7 @@ class GameScene: SKScene {
     private var cameraNode: SKCameraNode!
     private var backgroundNode: SKSpriteNode!
     private var isZoomedIn = false
+    var vehicles: [Vehicle] = []
     
     override func didMove(to view: SKView) {
         cameraNode = SKCameraNode()
@@ -27,20 +28,30 @@ class GameScene: SKScene {
         let scaleY = backgroundNode.size.height / view.frame.size.height
         cameraNode.setScale(min(scaleX, scaleY))
         startSpawningCarsOnAllRoutes()
+        
+        let vehicleSemaphore = Semaphore(type: .vehicle)
+        vehicleSemaphore.position = CGPoint(x: 100, y: 100)
+        addChild(vehicleSemaphore)
+        
+        let pedestrianSemaphore = Semaphore(type: .pedestrian)
+        pedestrianSemaphore.position = CGPoint(x: 200, y: 100)
+        addChild(pedestrianSemaphore)
     }
     
     
     func startSpawningCarsOnAllRoutes() {
-        let spawnAction = SKAction.run { [weak self] in
-            self?.spawnCar()
+        for _ in 1...6 {
+            let spawnAction = SKAction.run { [weak self] in
+                self?.spawnCar()
+            }
+            
+            let randomWaitDuration = randomTimeInterval(min: 1, max: 5)
+            let waitAction = SKAction.wait(forDuration: randomWaitDuration)
+            let sequence = SKAction.sequence([spawnAction, waitAction])
+            let repeatForever = SKAction.repeatForever(sequence)
+            
+            run(repeatForever)
         }
-        
-        let randomWaitDuration = randomTimeInterval(min: 1, max: 5)
-        let waitAction = SKAction.wait(forDuration: randomWaitDuration)
-        let sequence = SKAction.sequence([spawnAction, waitAction])
-        let repeatForever = SKAction.repeatForever(sequence)
-        
-        run(repeatForever, withKey: "spawnCars")
     }
     
     func spawnCar() {
@@ -49,11 +60,14 @@ class GameScene: SKScene {
         car.position = startPoint
         addChild(car)
         
-        let randomSpeed = CGFloat.random(in: 5...15)
+        let initialSpeed = CGFloat.random(in: 5...15)
+        car.speed = initialSpeed
         let direction: CGFloat = startPoint.y < 0 ? 1 : -1
         let maxY = backgroundNode.size.height / 2
         let minY = -backgroundNode.size.height / 2
-        car.moveVertically(speed: randomSpeed, direction: direction, maxY: maxY, minY: minY)
+        car.moveVertically(direction: direction, maxY: maxY, minY: minY, allVehicles: vehicles)
+        
+        vehicles.append(car)
     }
     
     override func mouseDown(with event: NSEvent) {

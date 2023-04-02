@@ -16,6 +16,7 @@
 		D07D6A2929D9F70800853D1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D07D6A2729D9F70800853D1A /* Main.storyboard */; };
 		D07D6A3129DA0FF400853D1A /* StartPointManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07D6A3029DA0FF400853D1A /* StartPointManager.swift */; };
 		D07D6A3429DA168500853D1A /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07D6A3329DA168500853D1A /* Vehicle.swift */; };
+		D07D6A3629DA299600853D1A /* Semaphore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07D6A3529DA299600853D1A /* Semaphore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		D07D6A2A29D9F70800853D1A /* OutdoorsProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OutdoorsProject.entitlements; sourceTree = "<group>"; };
 		D07D6A3029DA0FF400853D1A /* StartPointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPointManager.swift; sourceTree = "<group>"; };
 		D07D6A3329DA168500853D1A /* Vehicle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicle.swift; sourceTree = "<group>"; };
+		D07D6A3529DA299600853D1A /* Semaphore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Semaphore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			children = (
 				D07D6A3029DA0FF400853D1A /* StartPointManager.swift */,
 				D07D6A3329DA168500853D1A /* Vehicle.swift */,
+				D07D6A3529DA299600853D1A /* Semaphore.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -160,6 +163,7 @@
 				D07D6A2229D9F70600853D1A /* GameScene.swift in Sources */,
 				D07D6A1C29D9F70600853D1A /* AppDelegate.swift in Sources */,
 				D07D6A3429DA168500853D1A /* Vehicle.swift in Sources */,
+				D07D6A3629DA299600853D1A /* Semaphore.swift in Sources */,
 				D07D6A3129DA0FF400853D1A /* StartPointManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

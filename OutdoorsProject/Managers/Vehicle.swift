@@ -41,10 +41,29 @@ class Vehicle: SKSpriteNode {
         }
     }
     
-    func moveVertically(speed: CGFloat, direction: CGFloat, maxY: CGFloat, minY: CGFloat) {
+    func isCollisionImminent(with vehicles: [Vehicle]) -> Bool {
+        let detectionDistance: CGFloat = 30.0
+        let detectionRect = CGRect(x: position.x - size.width / 2, y: position.y - size.height / 2, width: size.width, height: size.height + detectionDistance)
+
+        for vehicle in vehicles {
+            if vehicle != self && detectionRect.intersects(vehicle.frame) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func moveVertically(direction: CGFloat, maxY: CGFloat, minY: CGFloat, allVehicles: [Vehicle]) {
         let moveAction = SKAction.customAction(withDuration: 1) { [weak self] (_, _) in
             guard let `self` = self else { return }
-            self.position.y += speed * direction
+
+            if self.isCollisionImminent(with: allVehicles) {
+                self.brake()
+            } else {
+                self.accelerate()
+            }
+
+            self.position.y += self.speed * direction
 
             if self.position.y > maxY || self.position.y < minY {
                 self.removeFromParent()
@@ -56,12 +75,12 @@ class Vehicle: SKSpriteNode {
     
     func accelerate() {
         state = .accelerating
-        // Adicione aqui o código para acelerar o veículo
+        speed = min(speed + 0.5, 15) // Ajuste os valores conforme necessário
     }
     
     func brake() {
         state = .braking
-        // Adicione aqui o código para frear o veículo
+        speed = max(speed - 1.0, 0) // Ajuste os valores conforme necessário
     }
     
     func stop() {
