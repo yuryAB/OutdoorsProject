@@ -10,52 +10,50 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    // 1. Adicione o objeto da câmera
     private var cameraNode: SKCameraNode!
-    
-    // 2. Adicione o objeto do background
     private var backgroundNode: SKSpriteNode!
-    
-    // 3. Crie uma variável de controle para armazenar o estado atual do zoom
     private var isZoomedIn = false
     
     override func didMove(to view: SKView) {
-        // Inicialize e configure a câmera
         cameraNode = SKCameraNode()
         self.camera = cameraNode
         self.addChild(cameraNode)
         
-        // Inicialize e configure o background
         backgroundNode = SKSpriteNode(imageNamed: "avenue")
         backgroundNode.zPosition = -1
         self.addChild(backgroundNode)
         
-        // Ajuste a escala da câmera para corresponder às dimensões do background
         let scaleX = backgroundNode.size.width / view.frame.size.width
         let scaleY = backgroundNode.size.height / view.frame.size.height
         cameraNode.setScale(min(scaleX, scaleY))
-        
-        setRoutes()
-        
-        for (index, _) in RoutePathManager.allPaths.enumerated() {
-            let routeName = "path\(index + 1)"
-            let spawnAction = SKAction.run { [weak self] in
-                self?.spawnCarOnRoute(routeName: routeName, duration: 5)
-            }
-            let waitAction = SKAction.wait(forDuration: 2)
-            let sequence = SKAction.sequence([spawnAction, waitAction])
-            let repeatForever = SKAction.repeatForever(sequence)
-            run(repeatForever, withKey: "spawnCarsOn\(routeName)")
+        startSpawningCarsOnAllRoutes()
+    }
+    
+    
+    func startSpawningCarsOnAllRoutes() {
+        let spawnAction = SKAction.run { [weak self] in
+            self?.spawnCar()
         }
+        
+        let randomWaitDuration = randomTimeInterval(min: 1, max: 5)
+        let waitAction = SKAction.wait(forDuration: randomWaitDuration)
+        let sequence = SKAction.sequence([spawnAction, waitAction])
+        let repeatForever = SKAction.repeatForever(sequence)
+        
+        run(repeatForever, withKey: "spawnCars")
     }
     
-    func touchDown(atPoint pos : CGPoint) {
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
+    func spawnCar() {
+        let startPoint = StartPointManager.VehicleStartPoints.randomElement()!
+        let car = Vehicle()
+        car.position = startPoint
+        addChild(car)
+        
+        let randomSpeed = CGFloat.random(in: 5...15)
+        let direction: CGFloat = startPoint.y < 0 ? 1 : -1
+        let maxY = backgroundNode.size.height / 2
+        let minY = -backgroundNode.size.height / 2
+        car.moveVertically(speed: randomSpeed, direction: direction, maxY: maxY, minY: minY)
     }
     
     override func mouseDown(with event: NSEvent) {
@@ -64,17 +62,8 @@ class GameScene: SKScene {
         toggleZoom()
     }
     
-    override func mouseDragged(with event: NSEvent) {
-    }
-    
-    override func mouseUp(with event: NSEvent) {
-    }
-    
-    override func keyDown(with event: NSEvent) {
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
+    func printCoordinates(at location: CGPoint) {
+        print("Clicado em X: \(location.x), Y: \(location.y)")
     }
     
     func toggleZoom() {
@@ -88,51 +77,7 @@ class GameScene: SKScene {
         isZoomedIn.toggle()
     }
     
-    func drawRoute(path: CGPath) -> SKShapeNode {
-        let route = SKShapeNode(path: path)
-        route.strokeColor = .red
-        route.lineWidth = 5
-        
-        return route
-    }
-    
-    func printCoordinates(at location: CGPoint) {
-        print("Clicado em X: \(location.x), Y: \(location.y)")
-    }
-    
-    func setRoutes() {
-        for (index, path) in RoutePathManager.allPaths.enumerated() {
-            let routeName = "path\(index + 1)"
-            let route = createRoute(points: path, routeName: routeName)
-            addChild(route)
-        }
-    }
-    
-    func createRoute(points: [CGPoint], routeName: String) -> SKShapeNode {
-        let path = CGMutablePath()
-        path.move(to: points[0])
-        
-        for point in points.dropFirst() {
-            path.addLine(to: point)
-        }
-        
-        let route = SKShapeNode(path: path)
-        route.strokeColor = .orange
-        route.lineWidth = 5
-        route.name = routeName
-        return route
-    }
-    
-    func spawnCarOnRoute(routeName: String, duration: TimeInterval) {
-        guard let route = childNode(withName: routeName) as? SKShapeNode, let path = route.path else { return }
-        
-        let car = SKSpriteNode(color: .blue, size: CGSize(width: 20, height: 20))
-        car.position = path.currentPoint
-        addChild(car)
-        
-        let followPath = SKAction.follow(path, asOffset: false, orientToPath: true, duration: duration)
-        let removeCar = SKAction.removeFromParent()
-        let sequence = SKAction.sequence([followPath, removeCar])
-        car.run(sequence)
+    func randomTimeInterval(min: TimeInterval, max: TimeInterval) -> TimeInterval {
+        return TimeInterval.random(in: min...max)
     }
 }
