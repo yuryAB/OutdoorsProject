@@ -29,13 +29,21 @@ class GameScene: SKScene {
         cameraNode.setScale(min(scaleX, scaleY))
         startSpawningCarsOnAllRoutes()
         
-        let vehicleSemaphore = Semaphore(type: .vehicle)
-        vehicleSemaphore.position = CGPoint(x: 100, y: 100)
-        addChild(vehicleSemaphore)
+        let vehicleSemaphore1 = Semaphore(type: .vehicle)
+        vehicleSemaphore1.position = CGPoint(x: 175, y: 256)
+        addChild(vehicleSemaphore1)
         
-        let pedestrianSemaphore = Semaphore(type: .pedestrian)
-        pedestrianSemaphore.position = CGPoint(x: 200, y: 100)
-        addChild(pedestrianSemaphore)
+        let vehicleSemaphore2 = Semaphore(type: .vehicle, inverted: true)
+        vehicleSemaphore2.position = CGPoint(x: -175, y: -212)
+        addChild(vehicleSemaphore2)
+        
+        let pedestrianSemaphore1 = Semaphore(type: .pedestrian)
+        pedestrianSemaphore1.position = CGPoint(x: 369, y: 127)
+        addChild(pedestrianSemaphore1)
+        
+        let pedestrianSemaphore2 = Semaphore(type: .pedestrian)
+        pedestrianSemaphore2.position = CGPoint(x: -381, y: -127)
+        addChild(pedestrianSemaphore2)
     }
     
     

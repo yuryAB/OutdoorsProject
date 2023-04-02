@@ -23,9 +23,11 @@ class Semaphore: SKNode {
     }
     
     let semaphoreType: SemaphoreType
+    let inverted: Bool
     
-    init(type: SemaphoreType) {
+    init(type: SemaphoreType, inverted: Bool = false) {
         self.semaphoreType = type
+        self.inverted = inverted
         super.init()
         
         setupSemaphore()
@@ -48,6 +50,10 @@ class Semaphore: SKNode {
             redLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreRedLight")
             greenLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreGreenLight")
         }
+        
+        if inverted {
+                   background.yScale = -1
+               }
         
         addChild(background)
         background.addChild(redLight)
