@@ -14,6 +14,7 @@
 		D07D6A2429D9F70600853D1A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07D6A2329D9F70600853D1A /* ViewController.swift */; };
 		D07D6A2629D9F70800853D1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D07D6A2529D9F70800853D1A /* Assets.xcassets */; };
 		D07D6A2929D9F70800853D1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D07D6A2729D9F70800853D1A /* Main.storyboard */; };
+		D07D6A3129DA0FF400853D1A /* RoutePathManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07D6A3029DA0FF400853D1A /* RoutePathManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		D07D6A2529D9F70800853D1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D07D6A2829D9F70800853D1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D07D6A2A29D9F70800853D1A /* OutdoorsProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OutdoorsProject.entitlements; sourceTree = "<group>"; };
+		D07D6A3029DA0FF400853D1A /* RoutePathManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePathManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		D07D6A1A29D9F70600853D1A /* OutdoorsProject */ = {
 			isa = PBXGroup;
 			children = (
+				D07D6A3229DA0FFF00853D1A /* Managers */,
 				D07D6A1B29D9F70600853D1A /* AppDelegate.swift */,
 				D07D6A1D29D9F70600853D1A /* GameScene.sks */,
 				D07D6A1F29D9F70600853D1A /* Actions.sks */,
@@ -68,6 +71,14 @@
 				D07D6A2A29D9F70800853D1A /* OutdoorsProject.entitlements */,
 			);
 			path = OutdoorsProject;
+			sourceTree = "<group>";
+		};
+		D07D6A3229DA0FFF00853D1A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D07D6A3029DA0FF400853D1A /* RoutePathManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,6 +156,7 @@
 				D07D6A2429D9F70600853D1A /* ViewController.swift in Sources */,
 				D07D6A2229D9F70600853D1A /* GameScene.swift in Sources */,
 				D07D6A1C29D9F70600853D1A /* AppDelegate.swift in Sources */,
+				D07D6A3129DA0FF400853D1A /* RoutePathManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
