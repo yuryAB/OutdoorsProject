@@ -17,9 +17,11 @@ class Semaphore: SKNode {
     private var redLight: SKSpriteNode!
     private var yellowLight: SKSpriteNode!
     private var greenLight: SKSpriteNode!
+    private var pRedLight: SKSpriteNode!
+    private var pGreenLight: SKSpriteNode!
     
     enum SemaphoreType {
-        case vehicle, pedestrian
+        case front, back
     }
     
     let semaphoreType: SemaphoreType
@@ -40,53 +42,57 @@ class Semaphore: SKNode {
     
     private func setupSemaphore() {
         switch semaphoreType {
-        case .vehicle:
-            background = SKSpriteNode(imageNamed: "vehicleSemaphoreBackground")
+        case .front:
+            background = SKSpriteNode(imageNamed: "semaphoreBackground")
+            background.zPosition = 0
             redLight = SKSpriteNode(imageNamed: "vehicleSemaphoreRedLight")
+            redLight.zPosition = 1
             yellowLight = SKSpriteNode(imageNamed: "vehicleSemaphoreYellowLight")
+            yellowLight.zPosition = 1
             greenLight = SKSpriteNode(imageNamed: "vehicleSemaphoreGreenLight")
-        case .pedestrian:
-            background = SKSpriteNode(imageNamed: "pedestrianSemaphoreBackground")
-            redLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreRedLight")
-            greenLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreGreenLight")
+            greenLight.zPosition = 1
+            pRedLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreRedLight")
+            pRedLight.zPosition = 1
+            pGreenLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreGreenLight")
+            pGreenLight.zPosition = 1
+        case .back:
+            background = SKSpriteNode(imageNamed: "semaphoreBackground")
+            background.zPosition = 1
+            redLight = SKSpriteNode(imageNamed: "vehicleSemaphoreRedLight")
+            redLight.zPosition = 0
+            yellowLight = SKSpriteNode(imageNamed: "vehicleSemaphoreYellowLight")
+            yellowLight.zPosition = 0
+            greenLight = SKSpriteNode(imageNamed: "vehicleSemaphoreGreenLight")
+            greenLight.zPosition = 0
+            pRedLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreRedLight")
+            pRedLight.zPosition = 0
+            pGreenLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreGreenLight")
+            pGreenLight.zPosition = 0
         }
         
-        if inverted {
-                   background.yScale = -1
-               }
         
         addChild(background)
         background.addChild(redLight)
         background.addChild(greenLight)
-        
-        if semaphoreType == .vehicle {
-            background.addChild(yellowLight)
-        }
-        
-        // Ajuste a posição das luzes conforme necessário
-    }
-    
-    private func createLight(color: SKColor) -> SKSpriteNode {
-        let light = SKSpriteNode(color: color, size: CGSize(width: 20, height: 20))
-        light.zPosition = 1
-        return light
+        background.addChild(yellowLight)
+        background.addChild(pRedLight)
+        background.addChild(pGreenLight)
     }
     
     private func startSemaphoreAnimation() {
-        if semaphoreType == .vehicle {
-            vehicleSemaphoreAnimation()
-        } else {
-            pedestrianSemaphoreAnimation()
-        }
+        vehicleSemaphoreAnimation()
+        pedestrianSemaphoreAnimation()
     }
     
     private func vehicleSemaphoreAnimation() {
-        let greenOnAction = SKAction.run { self.greenLight.alpha = 0 }
-        let greenOffAction = SKAction.run { self.greenLight.alpha = 1 }
-        let yellowOnAction = SKAction.run { self.yellowLight.alpha = 0 }
-        let yellowOffAction = SKAction.run { self.yellowLight.alpha = 1 }
-        let redOnAction = SKAction.run { self.redLight.alpha = 0 }
-        let redOffAction = SKAction.run { self.redLight.alpha = 1 }
+        let greenOnAction = SKAction.run { self.greenLight.alpha = 1 }
+        let greenOffAction = SKAction.run { self.greenLight.alpha = 0 }
+        let yellowOnAction = SKAction.run { self.yellowLight.alpha = 1 }
+        let yellowOffAction = SKAction.run { self.yellowLight.alpha = 0 }
+        let redOnAction = SKAction.run { self.redLight.alpha = 1 }
+        let redOffAction = SKAction.run { self.redLight.alpha = 0 }
+        
+        let allOff = SKAction.group([greenOffAction,redOffAction,yellowOffAction])
         
         let greenDuration = SKAction.wait(forDuration: 15.0)
         let yellowDuration = SKAction.wait(forDuration: 3.0)
@@ -98,25 +104,28 @@ class Semaphore: SKNode {
             redOnAction, redDuration, redOffAction
         ])
         
-        let repeatForever = SKAction.repeatForever(vehicleSequence)
+        let repeatForever = SKAction.group([allOff,SKAction.repeatForever(vehicleSequence)])
         run(repeatForever)
     }
     
     private func pedestrianSemaphoreAnimation() {
-        let greenOnAction = SKAction.run { self.greenLight.alpha = 0 }
-        let greenOffAction = SKAction.run { self.greenLight.alpha = 1 }
-        let redOnAction = SKAction.run { self.redLight.alpha = 0 }
-        let redOffAction = SKAction.run { self.redLight.alpha = 1 }
+        let greenOnAction = SKAction.run { self.pGreenLight.alpha = 1 }
+        let greenOffAction = SKAction.run { self.pGreenLight.alpha = 0 }
+        let redOnAction = SKAction.run { self.pRedLight.alpha = 1 }
+        let redOffAction = SKAction.run { self.pRedLight.alpha = 0 }
+        
+        let allOff = SKAction.group([greenOffAction,redOffAction])
         
         let greenDuration = SKAction.wait(forDuration: 15.0)
         let redDuration = SKAction.wait(forDuration: 18.0)
+        
         
         let pedestrianSequence = SKAction.sequence([
             redOnAction, redDuration, redOffAction,
             greenOnAction, greenDuration, greenOffAction
         ])
         
-        let repeatForever = SKAction.repeatForever(pedestrianSequence)
+        let repeatForever = SKAction.group([allOff,SKAction.repeatForever(pedestrianSequence)])
         run(repeatForever)
     }
 }
