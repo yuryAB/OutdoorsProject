@@ -19,21 +19,31 @@ class GameScene: SKScene {
         cameraNode = SKCameraNode()
         self.camera = cameraNode
         self.addChild(cameraNode)
-        
-        backgroundNode = SKSpriteNode(imageNamed: "avenue")
-        backgroundNode.zPosition = -1
-        self.addChild(backgroundNode)
-        
+        setBackground()
         let scaleX = backgroundNode.size.width / view.frame.size.width
         let scaleY = backgroundNode.size.height / view.frame.size.height
         cameraNode.setScale(min(scaleX, scaleY))
         startSpawningCarsOnAllRoutes()
-        
-        let vehicleSemaphore1 = Semaphore(type: .front)
-        vehicleSemaphore1.position = CGPoint(x: 300, y: 256)
-        addChild(vehicleSemaphore1)
+        setSemaphores()
     }
     
+    func setBackground() {
+        backgroundNode = SKSpriteNode(imageNamed: "avenue")
+        backgroundNode.zPosition = -1
+        self.addChild(backgroundNode)
+    }
+    
+    func setSemaphores() {
+        let vehicleSemaphore1 = Semaphore(type: .front)
+        vehicleSemaphore1.position = CGPoint(x: 310, y: 256)
+        vehicleSemaphore1.zPosition = 1
+        addChild(vehicleSemaphore1)
+        
+        let vehicleSemaphore2 = Semaphore(type: .back)
+        vehicleSemaphore2.position = CGPoint(x: -275, y: -300)
+        vehicleSemaphore2.zPosition = 2
+        addChild(vehicleSemaphore2)
+    }
     
     func startSpawningCarsOnAllRoutes() {
         for _ in 1...6 {
@@ -54,6 +64,7 @@ class GameScene: SKScene {
         let startPoint = StartPointManager.VehicleStartPoints.randomElement()!
         let car = Vehicle()
         car.position = startPoint
+        car.zPosition = 0
         addChild(car)
         
         let initialSpeed = CGFloat.random(in: 5...15)

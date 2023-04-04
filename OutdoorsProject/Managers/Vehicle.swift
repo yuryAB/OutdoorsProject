@@ -75,7 +75,7 @@ class Vehicle: SKSpriteNode {
     
     func accelerate() {
         state = .accelerating
-        speed = min(speed + 0.5, 15) // Ajuste os valores conforme necessário
+        speed = min(speed + 0.5, 4) // Ajuste os valores conforme necessário
     }
     
     func brake() {

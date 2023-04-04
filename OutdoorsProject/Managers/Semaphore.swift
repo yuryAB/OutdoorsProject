@@ -56,18 +56,18 @@ class Semaphore: SKNode {
             pGreenLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreGreenLight")
             pGreenLight.zPosition = 1
         case .back:
-            background = SKSpriteNode(imageNamed: "semaphoreBackground")
+            background = SKSpriteNode(imageNamed: "semaphoreFrontground")
             background.zPosition = 1
-            redLight = SKSpriteNode(imageNamed: "vehicleSemaphoreRedLight")
-            redLight.zPosition = 0
-            yellowLight = SKSpriteNode(imageNamed: "vehicleSemaphoreYellowLight")
-            yellowLight.zPosition = 0
-            greenLight = SKSpriteNode(imageNamed: "vehicleSemaphoreGreenLight")
-            greenLight.zPosition = 0
-            pRedLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreRedLight")
-            pRedLight.zPosition = 0
-            pGreenLight = SKSpriteNode(imageNamed: "pedestrianSemaphoreGreenLight")
-            pGreenLight.zPosition = 0
+            redLight = SKSpriteNode(imageNamed: "vehicleFSemaphoreRedLight")
+            redLight.zPosition = -1
+            yellowLight = SKSpriteNode(imageNamed: "vehicleFSemaphoreYellowLight")
+            yellowLight.zPosition = -1
+            greenLight = SKSpriteNode(imageNamed: "vehicleFSemaphoreGreenLight")
+            greenLight.zPosition = -1
+            pRedLight = SKSpriteNode(imageNamed: "pedestrianFSemaphoreRedLight")
+            pRedLight.zPosition = -1
+            pGreenLight = SKSpriteNode(imageNamed: "pedestrianFSemaphoreGreenLight")
+            pGreenLight.zPosition = -1
         }
         
         
@@ -92,16 +92,23 @@ class Semaphore: SKNode {
         let redOnAction = SKAction.run { self.redLight.alpha = 1 }
         let redOffAction = SKAction.run { self.redLight.alpha = 0 }
         
+        let yellowInitTime = SKAction.wait(forDuration: 1.0)
+        let yellowInit = SKAction.sequence([yellowOnAction, yellowInitTime])
+        let yellowBlinkInterval = SKAction.wait(forDuration: 0.5)
+        let yellowBlink = SKAction.sequence([yellowOnAction,yellowBlinkInterval,
+                                             yellowOffAction,yellowBlinkInterval])
+        let yellowBlinkAction = SKAction.repeat(yellowBlink, count: 3)
+        let yellowAction = SKAction.sequence([yellowInit,yellowBlinkAction])
+        
         let allOff = SKAction.group([greenOffAction,redOffAction,yellowOffAction])
         
         let greenDuration = SKAction.wait(forDuration: 15.0)
-        let yellowDuration = SKAction.wait(forDuration: 3.0)
         let redDuration = SKAction.wait(forDuration: 15.0)
         
         let vehicleSequence = SKAction.sequence([
             greenOnAction, greenDuration, greenOffAction,
-            yellowOnAction, yellowDuration, yellowOffAction,
-            redOnAction, redDuration, redOffAction
+            yellowAction,redOnAction,
+            redDuration, redOffAction
         ])
         
         let repeatForever = SKAction.group([allOff,SKAction.repeatForever(vehicleSequence)])
@@ -117,7 +124,7 @@ class Semaphore: SKNode {
         let allOff = SKAction.group([greenOffAction,redOffAction])
         
         let greenDuration = SKAction.wait(forDuration: 15.0)
-        let redDuration = SKAction.wait(forDuration: 18.0)
+        let redDuration = SKAction.wait(forDuration: 19.0)
         
         
         let pedestrianSequence = SKAction.sequence([
