@@ -7,11 +7,6 @@
 
 import SpriteKit
 
-enum SemaphoreType {
-    case vehicle
-    case pedestrian
-}
-
 class Semaphore: SKNode {
     private var background: SKSpriteNode!
     private var redLight: SKSpriteNode!

@@ -51,7 +51,7 @@ class GameScene: SKScene {
                 self?.spawnCar()
             }
             
-            let randomWaitDuration = randomTimeInterval(min: 1, max: 5)
+            let randomWaitDuration = randomTimeInterval(min: 3, max: 5)
             let waitAction = SKAction.wait(forDuration: randomWaitDuration)
             let sequence = SKAction.sequence([spawnAction, waitAction])
             let repeatForever = SKAction.repeatForever(sequence)
@@ -67,8 +67,8 @@ class GameScene: SKScene {
         car.zPosition = 0
         addChild(car)
         
-        let initialSpeed = CGFloat.random(in: 5...15)
-        car.speed = initialSpeed
+        let constantSpeed = CGFloat(6) // Defina a velocidade constante aqui
+        car.speed = constantSpeed
         let direction: CGFloat = startPoint.y < 0 ? 1 : -1
         let maxY = backgroundNode.size.height / 2
         let minY = -backgroundNode.size.height / 2

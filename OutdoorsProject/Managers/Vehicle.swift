@@ -8,37 +8,14 @@
 import SpriteKit
 
 class Vehicle: SKSpriteNode {
-    enum VehicleState {
-        case moving, accelerating, braking, stopped
-    }
-    
-    var state: VehicleState = .stopped {
-        didSet {
-            updateAppearance()
-        }
-    }
     
     init() {
         let texture = SKTexture(imageNamed: "car")
         super.init(texture: texture, color: .clear, size: texture.size())
-        updateAppearance()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func updateAppearance() {
-        switch state {
-        case .moving:
-            color = .blue
-        case .accelerating:
-            color = .green
-        case .braking:
-            color = .yellow
-        case .stopped:
-            color = .gray
-        }
     }
     
     func isCollisionImminent(with vehicles: [Vehicle]) -> Bool {
@@ -57,12 +34,6 @@ class Vehicle: SKSpriteNode {
         let moveAction = SKAction.customAction(withDuration: 1) { [weak self] (_, _) in
             guard let `self` = self else { return }
 
-            if self.isCollisionImminent(with: allVehicles) {
-                self.brake()
-            } else {
-                self.accelerate()
-            }
-
             self.position.y += self.speed * direction
 
             if self.position.y > maxY || self.position.y < minY {
@@ -73,18 +44,12 @@ class Vehicle: SKSpriteNode {
         run(repeatForeverAction)
     }
     
-    func accelerate() {
-        state = .accelerating
-        speed = min(speed + 0.5, 4) // Ajuste os valores conforme necessário
+    func accelerate(allVehicles: [Vehicle]) {
     }
     
     func brake() {
-        state = .braking
-        speed = max(speed - 1.0, 0) // Ajuste os valores conforme necessário
     }
     
     func stop() {
-        state = .stopped
-        // Adicione aqui o código para parar o veículo
     }
 }
