@@ -14,6 +14,7 @@ class GameScene: SKScene {
     private var backgroundNode: SKSpriteNode!
     private var isZoomedIn = false
     var vehicles: [Vehicle] = []
+    var stopZones: [StopZone] = []
     
     override func didMove(to view: SKView) {
         cameraNode = SKCameraNode()
@@ -40,6 +41,8 @@ class GameScene: SKScene {
         
         addChild(stopZone1)
         addChild(stopZone2)
+        stopZones.append(stopZone1)
+        stopZones.append(stopZone2)
     }
     
     func setBackground() {
@@ -87,7 +90,7 @@ class GameScene: SKScene {
         let direction: CGFloat = startPoint.y < 0 ? 1 : -1
         let maxY = backgroundNode.size.height / 2
         let minY = -backgroundNode.size.height / 2
-        car.moveVertically(direction: direction, maxY: maxY, minY: minY, allVehicles: vehicles)
+        car.moveVertically(direction: direction, maxY: maxY, minY: minY, allVehicles: vehicles, scene: self)
         
         vehicles.append(car)
     }

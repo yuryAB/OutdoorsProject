@@ -15,6 +15,8 @@ class Semaphore: SKNode {
     private var pRedLight: SKSpriteNode!
     private var pGreenLight: SKSpriteNode!
     
+    var isRedLightOn = false
+    
     enum SemaphoreType {
         case front, back
     }
@@ -84,8 +86,14 @@ class Semaphore: SKNode {
         let greenOffAction = SKAction.run { self.greenLight.alpha = 0 }
         let yellowOnAction = SKAction.run { self.yellowLight.alpha = 1 }
         let yellowOffAction = SKAction.run { self.yellowLight.alpha = 0 }
-        let redOnAction = SKAction.run { self.redLight.alpha = 1 }
-        let redOffAction = SKAction.run { self.redLight.alpha = 0 }
+        let redOnAction = SKAction.run {
+            self.redLight.alpha = 1
+            self.isRedLightOn = true
+        }
+        let redOffAction = SKAction.run {
+            self.redLight.alpha = 0
+            self.isRedLightOn = false
+        }
         
         let yellowInitTime = SKAction.wait(forDuration: 1.0)
         let yellowInit = SKAction.sequence([yellowOnAction, yellowInitTime])
