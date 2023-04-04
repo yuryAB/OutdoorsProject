@@ -25,6 +25,21 @@ class GameScene: SKScene {
         cameraNode.setScale(min(scaleX, scaleY))
         startSpawningCarsOnAllRoutes()
         setSemaphores()
+        setStopZone()
+    }
+    
+    func setStopZone() {
+        let stopZoneSize = CGSize(width: 284.52, height: 20)
+        let stopZone1 = StopZone(size: stopZoneSize)
+        stopZone1.position = CGPoint(x: 185, y: -180)
+        stopZone1.zPosition = 0
+        
+        let stopZone2 = StopZone(size: stopZoneSize)
+        stopZone2.position = CGPoint(x: -166, y: 180)
+        stopZone2.zPosition = 0
+        
+        addChild(stopZone1)
+        addChild(stopZone2)
     }
     
     func setBackground() {
